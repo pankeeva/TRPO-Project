@@ -1,0 +1,7 @@
+﻿  main.cpp
+  nonlinear_equations_system.cpp
+d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(79): warning C4018: '<': signed/unsigned mismatch
+d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(94): warning C4018: '<': signed/unsigned mismatch
+d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(104): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  TRPO Project.vcxproj -> D:\VS Projects\repos\TRPO Project\Debug\TRPO Project.exe
