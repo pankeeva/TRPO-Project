@@ -12,7 +12,7 @@ Equation::Equation(vector<double> coefs, vector<double> pows) :
 	coefficients(coefs),
 	powers(pows)
 {
-	
+
 }
 
 Equation::~Equation()
@@ -50,7 +50,7 @@ void Equation::printEquation()
 
 	if (coefficients[coefficients.size() - 1])
 	{
-		cout << " = -(" << coefficients[coefficients.size() - 1] << ")";
+		cout << " = (" << coefficients[coefficients.size() - 1]*(-1) << ")";
 	}
 	else cout << " = 0";
 
@@ -61,8 +61,8 @@ double Equation::derivativeAdjective(size_t adjectiveIndex, double point)
 {
 	double h = 0.000000001; //step to calculate derivative
 
-	//approximately calculate the first derivative 
-	//left way
+							//approximately calculate the first derivative 
+							//left way
 	return (functionToDerevative(coefficients[adjectiveIndex], powers[adjectiveIndex], point) -
 		functionToDerevative(coefficients[adjectiveIndex], powers[adjectiveIndex], (point - h))) / h;
 }
@@ -72,11 +72,11 @@ double Equation::functionToDerevative(double coef, double power, double point)
 	return coef * std::pow(point, power);
 }
 
-EquationSystem::EquationSystem(vector<vector<double>> coefs, vector<vector<double>> pows):
+EquationSystem::EquationSystem(vector<vector<double>> coefs, vector<vector<double>> pows) :
 	size(coefs.size()),
 	equations(new Equation[size])
 {
-	for (size_t i = 0; i < size; i++) 
+	for (size_t i = 0; i < size; i++)
 	{
 		equations[i].setCoefficients(coefs[i]);
 		equations[i].setPowers(pows[i]);
@@ -99,20 +99,22 @@ void EquationSystem::printSystem()
 	cout << endl;
 }
 
-void EquationSystem::matrixJacobi(double point)
+vector<vector<double>> EquationSystem::matrixJacobi(vector<double> point)
 {
+	vector<vector<double>> matr;
 	for (size_t i = 0; i < size; i++)
 	{
+		matr.push_back(vector<double>());
 		size_t tempSize = equations[i].getCoefficientsSize();
 
 		for (size_t j = 0; j < tempSize; j++)
 		{
-			cout << equations[i].derivativeAdjective(j, point) << " ";
+			matr[matr.size()-1].push_back(equations[i].derivativeAdjective(j, point[i]));
 		}
-
-		cout << endl;
 	}
+	return matr;
 }
+
 
 int Equation::getCoefficientsSize()
 {

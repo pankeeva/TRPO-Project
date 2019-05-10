@@ -1,7 +1,1 @@
-﻿  main.cpp
-  nonlinear_equations_system.cpp
-d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(79): warning C4018: '<': signed/unsigned mismatch
-d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(94): warning C4018: '<': signed/unsigned mismatch
-d:\vs projects\repos\trpo project\trpo project\nonlinear_equations_system.cpp(104): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  TRPO Project.vcxproj -> D:\VS Projects\repos\TRPO Project\Debug\TRPO Project.exe
+﻿E:\Program Files\VisualStudio\Common7\IDE\VC\VCTargets\Platforms\Win32\PlatformToolsets\v141\Toolset.targets(34,5): error MSB8036: The Windows SDK version 10.0.17763.0 was not found. Install the required version of Windows SDK or change the SDK version in the project property pages or by right-clicking the solution and selecting "Retarget solution".

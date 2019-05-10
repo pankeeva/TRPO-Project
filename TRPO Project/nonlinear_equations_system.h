@@ -10,8 +10,8 @@ class Equation {
 public:
 	//after calling this constructor, you need to call 
 	//setCoefficients() and setPowers() methods
-	Equation(); 
-	Equation(vector<double> coefs,  vector<double> pows);
+	Equation();
+	Equation(vector<double> coefs, vector<double> pows);
 	~Equation();
 
 	void setCoefficients(vector<double> coefs);
@@ -22,7 +22,7 @@ public:
 	int getCoefficientsSize();
 private:
 	vector<double> coefficients; //the last element is a free member of the equation
-	vector<double> powers; 
+	vector<double> powers;
 };
 
 
@@ -32,7 +32,7 @@ public:
 	~EquationSystem();
 
 	void printSystem();
-	void matrixJacobi(double point);
+	vector<vector<double>> matrixJacobi(vector<double> point);
 private:
 	int size; //the number of equations in the system
 	Equation* equations;
