@@ -109,7 +109,7 @@ vector<vector<double>> EquationSystem::matrixJacobi(vector<double> point)
 
 		for (size_t j = 0; j < tempSize; j++)
 		{
-			matr[matr.size()-1].push_back(equations[i].derivativeAdjective(j, point[i]));
+			matr[matr.size()-1].push_back(equations[i].derivativeAdjective(j, point[j]));
 		}
 	}
 	return matr;

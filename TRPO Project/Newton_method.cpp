@@ -2,6 +2,7 @@
 
 void Newton::Print(vector<vector<double>> m)
 {
+	cout << endl << endl;
 	for (size_t i = 0; i < m.size(); i++)
 	{
 		for (size_t j = 0; j < m[i].size(); j++)
@@ -10,6 +11,7 @@ void Newton::Print(vector<vector<double>> m)
 		}
 		cout << endl;
 	}
+	cout << endl << endl;
 }
 
 Newton::Newton() {}
@@ -22,7 +24,7 @@ vector<double> Newton::EquationInPoint(vector<vector<double>> coefs, vector<vect
 		double result = 0;
 		for (int j = 0; j < coefs[i].size() - 1; j++)
 		{
-			result += pow(points[i], pows[i][j]) * coefs[i][j];
+			result += pow(points[j], pows[i][j]) * coefs[i][j];
 		}
 		Fx0.push_back(result + coefs[i][coefs[i].size() - 1]);
 	}
@@ -36,9 +38,11 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 	bool is_first = true;
 	vector<double> multi;
 	vector<double> r;
+	int ii = 0;
 	while (true)
 	{
 		vector<vector<double>> jacobi = e.matrixJacobi(points);
+		this->Print(jacobi);
 		vector<double> Fx0 = this->EquationInPoint(coefs, pows, points);
 		for (int i = 0; i < Fx0.size(); i++)
 		{
@@ -86,7 +90,7 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 				{
 					br[i][j] = jacobi[i][j];
 				}
-				br[i][jacobi.size()] = Fx0[i];
+				br[i][jacobi.size()] = Fx0[i]*(-1);
 			}
 			double* gaus = Gaus(br, jacobi.size(), jacobi.size() + 1, det, mark, epsilon);
 			for (int i = 0; i < r.size(); i++)
@@ -107,6 +111,9 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 			}
 			multi = mm;
 		}
+		ii++;
+		/*if (ii == 2)
+			break;*/
 		is_first = false;
 		double max = Max(multi);
 		if (max > epsilon)
@@ -122,7 +129,7 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 		result.is_solution = true;
 		break;
 	}
-
+	cout << "Count of iterations: " << ii << endl;
 	return result;
 }
 
