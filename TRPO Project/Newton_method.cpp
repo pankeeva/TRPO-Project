@@ -16,25 +16,34 @@ void Newton::Print(vector<vector<double>> m)
 
 Newton::Newton() {}
 
-vector<double> Newton::EquationInPoint(vector<vector<double>> coefs, vector<vector<double>> pows, vector<double> points)
+vector<double> Newton::EquationInPoint(EquationSystem e, vector<double> points)
 {
 	vector<double> Fx0;
-	for (int i = 0; i < coefs.size(); i++)
+	for (int k = 0; k < e.getEquationsCount(); k++)
 	{
 		double result = 0;
-		for (int j = 0; j < coefs[i].size() - 1; j++)
+		vector<double> coefs = e.getEquations()[k].getCoefficients();
+		vector<double> pows = e.getEquations()[k].getPowers();
+		int countCoefs = e.getEquations()[k].getCoefficientsCount() - 1;
+		for (int i = 0; i < countCoefs; i++)
 		{
-			result += pow(points[j], pows[i][j]) * coefs[i][j];
+			result += pow(points[i], pows[i]) * coefs[i];
+			if (k + 1 == e.getEquations()[k].getDoubleCoefIndex())
+			{
+				result += e.getEquations()[k].getDoubleCoefIndex();
+			}
 		}
-		Fx0.push_back(result + coefs[i][coefs[i].size() - 1]);
+
+		Fx0.push_back(result + coefs[countCoefs]);
 	}
+
 	return Fx0;
 }
 
-Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<double>> pows, vector<double> points, double epsilon)
+Result Newton::SolutionOfTheSystem(EquationSystem e, vector<double> points, double epsilon)
 {
 	Result result;
-	EquationSystem e(coefs, pows);
+	//EquationSystem e(coefs, pows);
 	bool is_first = true;
 	vector<double> multi;
 	vector<double> r;
@@ -42,13 +51,13 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 	while (true)
 	{
 		vector<vector<double>> jacobi = e.matrixJacobi(points);
-		this->Print(jacobi);
-		vector<double> Fx0 = this->EquationInPoint(coefs, pows, points);
-		for (int i = 0; i < Fx0.size(); i++)
+		//this->Print(jacobi);
+		vector<double> Fx0 = this->EquationInPoint(e, points);
+		/*for (int i = 0; i < Fx0.size(); i++)
 		{
-			cout << "Fx0: " << Fx0[i] << " ";
+		cout << "Fx0: " << Fx0[i] << " ";
 		}
-		cout << endl;
+		cout << endl;*/
 
 		bool mark = false;
 
@@ -69,7 +78,12 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 					inv[i][j] = inverse[i][j];
 				}
 			}
-			Print(inv);
+			for (int i = 0; i < jacobi.size(); i++)
+			{
+				delete[] inverse[i];
+			}
+			delete[] inverse;
+			//Print(inv);
 
 			cout << "R:" << endl;
 			multi = Multiple(inv, Fx0);
@@ -90,30 +104,37 @@ Result Newton::SolutionOfTheSystem(vector<vector<double>> coefs, vector<vector<d
 				{
 					br[i][j] = jacobi[i][j];
 				}
-				br[i][jacobi.size()] = Fx0[i]*(-1);
+				br[i][jacobi.size()] = Fx0[i] * (-1);
 			}
 			double* gaus = Gaus(br, jacobi.size(), jacobi.size() + 1, det, mark, epsilon);
 			for (int i = 0; i < r.size(); i++)
 			{
 				r[i] += gaus[i];
-				cout << "delta x: "<<gaus[i] << " ";
+				//cout << "delta x: " << gaus[i] << " ";
 			}
-			cout <<endl<< "R:" << endl;
-			for (int i = 0; i < r.size(); i++)
+			//cout << endl << "R:" << endl;
+			/*for (int i = 0; i < r.size(); i++)
 			{
-				cout << r[i] << " ";
+			cout << r[i] << " ";
 			}
-			cout << endl;
+			cout << endl;*/
 			vector<double> mm;
 			for (int i = 0; i < r.size(); i++)
 			{
 				mm.push_back(gaus[i]);
 			}
 			multi = mm;
+
+			for (int i = 0; i < jacobi.size(); i++)
+			{
+				delete[] br[i];
+			}
+			delete[] br;
+			delete[]gaus;
 		}
 		ii++;
 		/*if (ii == 2)
-			break;*/
+		break;*/
 		is_first = false;
 		double max = Max(multi);
 		if (max > epsilon)
@@ -158,10 +179,10 @@ vector<double> Newton::Difference(vector<double> a, vector<double> b)
 	{
 		res[i] = 0;
 	}
-		for (int i = 0; i < a.size(); i++)
-		{
-			res[i] = a[i]-b[i];
-		}
+	for (int i = 0; i < a.size(); i++)
+	{
+		res[i] = a[i] - b[i];
+	}
 	return res;
 }
 
@@ -219,7 +240,7 @@ double* Newton::Gaus(double **brr, int row, int col, double*det, bool& mark, dou
 		{
 			if (j != indexrowmax)
 			{
-				double tmp;
+				int tmp;
 				for (int i = 0; i < col; i++)
 				{
 					tmp = arr[j][i];
@@ -259,13 +280,12 @@ double* Newton::Gaus(double **brr, int row, int col, double*det, bool& mark, dou
 		}
 		results[i] = (arr[i][col - 1] - sum) / arr[i][i];
 	}
-	//cout << "..............." << endl;
-	//for (int i = 0; i < row; i++)
-	//{
-	//	cout << results[i] << " ";
+	/*for (int i = 0; i < row; i++)
+	{
+	cout << results[i] << " ";
 
-	//}
-	cout << endl<< endl;
+	}
+	cout << endl;*/
 	return results;
 }
 

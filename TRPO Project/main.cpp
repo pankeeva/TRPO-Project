@@ -1,6 +1,5 @@
 #include "Newton_method.h"
-#include "Runge-Kutta_method.h"
-
+#include<Windows.h>
 
 void Print(vector<vector<double>> m)
 {
@@ -39,16 +38,35 @@ int main()
 
 	// Newton *n = new Newton();
 	// n->SolutionOfTheSystem(coefficients, powers, point, 0.005);
-	
-	
-	EquationSystem newSystem = checkingSystem(5);
-	newSystem.printSystem();
 
-	vector<double> point = { 0.5,0.5,0.5,0.5,0.5 };
+	int count;
+	cin >> count;
+	EquationSystem newSystem = checkingSystem(count);
+	//newSystem.printSystem();
 
-	cout << "Jacobi matrix:" << endl;
+	/*vector<double> point = { 0.5,0.5,0.5,0.5,0.5 };*/
+
+	vector<double> point;
+	for (size_t i = 0; i < count; i++)
+	{
+		point.push_back(0.5);
+	}
+
+	/*cout << "Jacobi matrix:" << endl;
 	vector<vector<double>> matrixJacobi = newSystem.matrixJacobi(point);
-	Print(matrixJacobi);
+	Print(matrixJacobi);*/
+
+	DWORD start_time = ::GetTickCount();
+	Newton *n = new Newton();
+	Result result = n->SolutionOfTheSystem(newSystem, point, 0.005);
+	cout << "\nResult:\n";
+	for (int i = 0; i < result.matrix.size(); i++)
+	{
+		cout << result.matrix[i] << " ";
+	}
+	cout << endl;
+	DWORD end_time = ::GetTickCount();
+	cout << (end_time - start_time)/1000.0 << endl;
 
 	system("pause");
 	return 0;

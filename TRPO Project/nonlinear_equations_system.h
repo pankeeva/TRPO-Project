@@ -16,6 +16,8 @@ public:
 
 	void setCoefficients(vector<double> coefs);
 	void setPowers(vector<double> pows);
+	vector<double> getCoefficients();
+	vector<double> getPowers();
 	void setDoubleCoefIndex(size_t value);
 	size_t getDoubleCoefIndex();
 	void printEquation();
@@ -23,6 +25,7 @@ public:
 	double functionToDerevative(double coef, double power, double point);
 	double functionToDerevativeDouble(double coef, double point);    //Only for checkingSystem() method
 	int getCoefficientsSize();
+	int getCoefficientsCount();
 private:
 	vector<double> coefficients; //the last element is a free member of the equation
 	vector<double> powers;
@@ -38,9 +41,12 @@ public:
 	void setDoubleCoefOfEquation(vector<size_t> values);
 	void printSystem();
 	vector<vector<double>> matrixJacobi(vector<double> point);
+	vector<Equation> getEquations();
+	int getEquationsCount();
 private:
 	int size; //the number of equations in the system
-	Equation* equations;
+	vector<Equation> equations;
+	double calculateInPoint(int);
 };
 
 
